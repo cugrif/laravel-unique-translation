@@ -14,7 +14,7 @@ class UniqueTranslationServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('unique_translation', UniqueTranslationValidator::class.'@validate');
+        Validator::extend('unique_translation', UniqueTranslationValidator::class . '@validate');
         Validator::replacer('unique_translation', function ($message, $attribute, $rule, $parameters) {
             $locale = $this->parseLocaleFromAttr($attribute);
             return str_replace(':locale', $locale, $message);
@@ -31,7 +31,8 @@ class UniqueTranslationServiceProvider extends ServiceProvider
         //
     }
 
-    private function parseLocaleFromAttr($attr){
+    private function parseLocaleFromAttr($attr)
+    {
         $parts = explode('.', $attr);
         $locale = array_pop($parts);
         return $locale;
