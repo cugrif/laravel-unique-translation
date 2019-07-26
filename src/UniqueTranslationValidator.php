@@ -43,8 +43,8 @@ class UniqueTranslationValidator
     {
         $parts = explode('.', $attribute);
 
-        $name = $parts[0];
-        $locale = $parts[1] ?? App::getLocale();
+        $locale = array_pop($parts) ?? App::getLocale();
+        $name = implode('.', $parts);
 
         return [$name, $locale];
     }
