@@ -27,8 +27,6 @@ class UniqueTranslationValidator
             return true;
         }
 
-        $this->addErrorsToValidator($validator, $parameters, $name, $locale);
-
         return false;
     }
 
@@ -236,73 +234,5 @@ class UniqueTranslationValidator
         } else {
             $query->where($key, $extraValue);
         }
-    }
-
-    /**
-     * Add error messages to the validator.
-     *
-     * @param \Illuminate\Validation\Validator $validator
-     * @param array $parameters
-     * @param string $name
-     * @param string $locale
-     *
-     * @return void
-     */
-    protected function addErrorsToValidator($validator, $parameters, $name, $locale)
-    {
-        $rule = 'unique_translation';
-        $message = $this->getFormattedMessage($validator, $rule, $parameters, $name, $locale);
-
-        $validator->errors()
-            ->add($name, $message)
-            ->add("{$name}.{$locale}", $message);
-    }
-
-    /**
-     * Get the formatted error message.
-     *
-     * This will format the placeholders:
-     * e.g. "post_slug" will become "post slug".
-     *
-     * @param \Illuminate\Validation\Validator $validator
-     * @param string $rule
-     * @param array $parameters
-     * @param string $name
-     * @param string $locale
-     *
-     * @return string
-     */
-    protected function getFormattedMessage($validator, $rule, $parameters, $name, $locale)
-    {
-        $message = $this->getMessage($validator, $rule, $name, $locale);
-
-        return $validator->makeReplacements($message, $name, $rule, $parameters);
-    }
-
-    /**
-     * Get any custom message from the validator or return a default message.
-     *
-     * @param \Illuminate\Validation\Validator $validator
-     * @param string $rule
-     * @param string $name
-     * @param string $locale
-     *
-     * @return string
-     */
-    protected function getMessage($validator, $rule, $name, $locale)
-    {
-        $keys = [
-            "{$name}.{$rule}",
-            "{$name}.*.{$rule}",
-            "{$name}.{$locale}.{$rule}",
-        ];
-
-        foreach ($keys as $key) {
-            if (array_key_exists($key, $validator->customMessages)) {
-                return $validator->customMessages[$key];
-            }
-        }
-
-        return trans('validation.unique');
     }
 }
